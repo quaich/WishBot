@@ -1,7 +1,7 @@
 const Discord = require('discord.js');
 const getJSON = require('get-json')
 const client = new Discord.Client();
-const token = '';
+const token = 'tokenhere';
 client.on('ready', () => {
   console.log(`Logged in as ${client.user.tag}!`);
 });
@@ -13,24 +13,23 @@ client.on('message', msg => {
   const command = args.shift().toLowerCase();
   if (command === "help")
   {
-    if (args[0] === "mcping")
+    if (args[0] === "mcserver")
      {
-       msg.channel.send("This prints a message with informaion about the ip's minecraft server.\nUsage: !mcping <ipaddress>");
+       msg.channel.send("This prints a message with informaion about the target minecraft server.\nUsage: !mcserver <ipaddress>:[port]");
+     }
+     else
+     {
+       msg.channel.send("Help for Wishbot:\n- help: Displays this message.\n- mcserver: Displays information about a target minecraft server. Usage: !mcserver <ipaddress>:[port]")
      }
   }
-  if (command === "replywith")
-  {
-    msg.reply("Here's what you posted:" + args[0]);
-  }
-  if (command === "mcping")
+  if (command === "mcserver")
   {
       var url = ("https://mcapi.us/server/status?ip="+args[0]);
       getJSON(url, function(error,response)
       {
             if (response.online===true)
             {
-              var timeonline = [response.duration/(60*60*24*28),response.duration/(60*60*24),response.duration/60*60,response.duration/60];
-              msg.channel.send(args[0] + " is online! :white_check_mark:\nIt currently has " + response.players.now + "/" + response.players.max + " players online.")
+              msg.channel.send(args[0] + " is online! :white_check_mark:\n```"+ response.motd+"```\nIt currently has " + response.players.now + "/" + response.players.max + " players online.")
             }
             else
             {
