@@ -1,5 +1,5 @@
 {
 	"prefix": "w:",
-	"discordtoken": "DISCORD_TOKEN_GOES_HERE", //https://discordapp.com/developers/applications/
-	"osutoken": "OSU_TOKEN_GOES_HERE" //https://osu.ppy.sh/p/api
+	"discordtoken": "DISCORD_TOKEN_GOES_HERE",
+	"osutoken": "OSU_TOKEN_GOES_HERE"
 }
