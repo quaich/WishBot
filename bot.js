@@ -36,14 +36,17 @@ client.on('message', msg => {
 
   const args = msg.content.slice(prefix.length).trim().split(/ +/g);
   const commandName = args.shift().toLowerCase();
-  if (!client.commands.has(commandName)) return;
-  const command = client.commands.get(commandName);
-  try {
-    command.execute(msg, args);
-  }
-  catch (error) {
-      console.error(error);
-      message.reply('there was an error trying to execute that command!');
-  }
+  if (!client.commands.has(commandName)){
+    msg.channel.send("Command not found!")
+  } else {
+      const command = client.commands.get(commandName);
+      try {
+        command.execute(msg, args, prefix);
+      }
+      catch (error) {
+          console.error(error);
+          msg.reply('there was an error trying to execute that command!');
+      }
+  };
 });
 
