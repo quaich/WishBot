@@ -1,0 +1,2 @@
+#Ignore config.json (Don't want/need to upload the token)
+config.json

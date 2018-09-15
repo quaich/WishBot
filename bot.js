@@ -1,50 +1,49 @@
 const Discord = require('discord.js');
-const getJSON = require('get-json')
+const fs = require('fs');
 const client = new Discord.Client();
-const token = 'tokenhere';
+
+//Import config
+const { prefix, discordtoken, osutoken } = require('./config.json');
+
+//Import commmands
+client.commands = new Discord.Collection();
+
+//Parse commands
+const commandFiles = fs.readdirSync('./commands').filter(file => file.endsWith('.js'));
+
+for (const file of commandFiles) {
+    const command = require(`./commands/${file}`);
+
+    // set a new item in the Collection
+    // with the key as the command name and the value as the exported module
+    client.commands.set(command.name, command);
+}
+
+//Log in
+client.login(discordtoken)
+
 client.on('ready', () => {
   console.log(`Logged in as ${client.user.tag}!`);
 });
+console.log(prefix)
 
+//parse message
 client.on('message', msg => {
-  if(msg.author.bot) return;
-  if(msg.content.indexOf("!") !== 0) return;
-  const args = msg.content.slice(1).trim().split(/ +/g);
-  const command = args.shift().toLowerCase();
-  if (command === "help")
-  {
-    if (args[0] === "mcs")
-     {
-       msg.channel.send("This prints a message with informaion about the target minecraft server.\nUsage: !mcs <ipaddress>:[port]");
-     }
-     else
-     {
-       msg.channel.send("Help for Wishbot:\n- help: Displays this message.\n- mcs: Displays information about a target minecraft server. Usage: !mcs <ipaddress>:[port]")
-     }
+
+  if(msg.author.bot) return; //ignore self
+
+  if(msg.content.indexOf(prefix) !== 0) return; //ignore blank commands
+
+  const args = msg.content.slice(prefix.length).trim().split(/ +/g);
+  const commandName = args.shift().toLowerCase();
+  if (!client.commands.has(commandName)) return;
+  const command = client.commands.get(commandName);
+  try {
+    command.execute(msg, args);
   }
-  if (command === "mcs")
-  {
-      var url = ("https://mcapi.us/server/status?ip="+args[0]);
-      getJSON(url, function(error,response)
-      {
-            if (response.online===true)
-            {
-              msg.channel.send(args[0] + " is online! :white_check_mark:\n```"+ response.motd+"```\nIt currently has " + response.players.now + "/" + response.players.max + " players online.")
-            }
-            else
-            {
-              if (response.last_online)
-              {
-                  var dayssinceonline = Math.round((((new Date()).getTime()) - response.last_updated)/(60*60*24));
-                  msg.channel.send(args[0] + " is offline! :anger:\nIt was last recorded online " + dayssinceonline +" days ago.");
-              }
-              else
-              {
-                msg.channel.send(args[0] + " is offline! :anger:\nAccording to MCApi's records this server has never been online. :sob:");
-              }
-            }
-      });
+  catch (error) {
+      console.error(error);
+      message.reply('there was an error trying to execute that command!');
   }
 });
 
-client.login(token);
