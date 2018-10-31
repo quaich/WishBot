@@ -1,18 +1,18 @@
-const Discord = require('discord.js');
-const fs = require('fs');
+const Discord = require("discord.js");
+const fs = require("fs");
 const client = new Discord.Client();
 
 //Import config
-const { prefix, discordtoken, osutoken } = require('./config.json');
+const { prefix, discordtoken, osutoken } = require("./config.json");
 
 //Import commmands
 client.commands = new Discord.Collection();
 
 //Parse commands
-const commandFiles = fs.readdirSync('./commands').filter(file => file.endsWith('.js'));
+const commandFiles = fs.readdirSync("./commands").filter(file => file.endsWith(".js"));
 
 for (const file of commandFiles) {
-    const command = require(`./commands/${file}`);
+    const command = require("./commands/"+file);
 
     // set a new item in the Collection
     // with the key as the command name and the value as the exported module
@@ -22,13 +22,13 @@ for (const file of commandFiles) {
 //Log in
 client.login(discordtoken)
 
-client.on('ready', () => {
-  console.log(`Logged in as ${client.user.tag}!`);
+client.on("ready", () => {
+  console.log("Logged in as " + client.user.tag + "!");
 });
 console.log(prefix)
 
 //parse message
-client.on('message', msg => {
+client.on("message", msg => {
 
   if(msg.author.bot) return; //ignore self
 
@@ -45,7 +45,7 @@ client.on('message', msg => {
       }
       catch (error) {
           console.error(error);
-          msg.reply('there was an error trying to execute that command!');
+          msg.reply("there was an error trying to execute that command!");
       }
   };
 });

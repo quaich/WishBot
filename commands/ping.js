@@ -1,7 +1,9 @@
 module.exports = {
-    name: 'ping',
-    description: 'Ping!',
+    name: "ping",
+    description: "Ping!",
     execute(msg, args, prefix) {
-        msg.channel.send('Pong.');
+    	console.log("User requested ping time:" + (new Date().getTime() - msg.createdTimestamp));
+		msg.channel.send("Pong! " + (new Date().getTime() - msg.createdTimestamp) + "ms");
+
     },
 };

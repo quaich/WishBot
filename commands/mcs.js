@@ -1,11 +1,10 @@
 module.exports = {
-    name: 'mcs',
-    description: 'Gets Minecraft server status from mcapi.us',
+    name: "mcs",
+    description: "Gets Minecraft server status from mcapi.us",
     execute(msg, args, prefix) {
-      const getJSON = require('get-json')
+      const getJSON = require("get-json")
       var url = ("https://mcapi.us/server/status?ip="+args[0]);
-      getJSON(url, function(error,response)
-      {
+      getJSON(url, function(error,response){
             console.log("User paged "+args[0]+" MCServer status.")
             if (response.online===true)
             {
