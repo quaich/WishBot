@@ -1,6 +1,6 @@
 # Wishbot
 
-This is WishBot; A bot that is currently mainly used to display information about @Bitpickin's services.
+Bot designed to fill niches that other bots I've found cannot do. 
 
 ### Prerequisites
 ```
